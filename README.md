@@ -39,8 +39,8 @@ For the original and extended QDF models Bayesian inference is performed using a
 
 The three models are called using the commands `javelle()`, `extendedQDF()`, and `reversiblejumpQDF()`. The inputs are
 - `data` - the data in matrix format
-- `startpoint` - a named vector containing startpoints for each of the model parameters. 
-- `tuning` - a named vector specifying the width of the proposal distributions for some of the model parameters.
+- `startpoint` - a named vector containing startpoints for the model parameters. 
+- `tuning` - a named vector specifying the width of the proposal distributions for the model parameters.
 - `iter` - the number of iterations in the MCMC sampler.
 - `ss` - the number of iterations at which we subsample. If included, the sampler stores every ss-th iteration.
 
@@ -49,9 +49,10 @@ The `reversiblejumpQDF()` model additionally takes
 
 For example, if we wanted to run the `reversiblejumpQDF()` model for 2.5*10^6 iterations, storing every 5th iteration, where we repeat sampling 10 times before proposing a jump between models, we would call:
 ```
-outputRJ <- reversiblejumpQDF(data,startpoint,tuning,2.5*10^6,5,10)
+outputRJ <- reversiblejumpQDF(data, startpoint, tuning, iter = 2.5*10^6, ss = 5, innerloop = 10)
 ```
 
+small set, custom analysis, long time, pre computed startpoints and tuning parameters for each dataset to repeat the analysis in article 1 are loaded into the respository. 
 Time? output?
 
 ## 
