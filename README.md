@@ -35,9 +35,22 @@ The MCMC sampler expects data in the form of a 2 x (n*d) matrix, where n = numbe
 (example? change to Rmd)
 
 ### Running the MCMC sampler
-For the original and extended QDF models Bayesian inference is performed using a Metropolis-Within-Gibbs algorithm. The mixture model relies on a reversible jump MCMC algorithm, similar to the reversible jump methodology for normal mixtures described in [Richardson and Green (1997)](https://academic.oup.com/jrsssb/article/59/4/731/7083042). See [Barna et al., 2023](https://www.sciencedirect.com/science/article/pii/S0022169423003906#b34), section 3.3 for details.
+For the original and extended QDF models Bayesian inference is performed using a Metropolis-Within-Gibbs algorithm. The mixture model relies on a reversible jump MCMC algorithm, similar to the reversible jump methodology for normal mixtures described in [Richardson and Green (1997)](https://academic.oup.com/jrsssb/article/59/4/731/7083042). The models the algorithm jumps between are the original and extended QDF models. See [Barna et al., 2023](https://www.sciencedirect.com/science/article/pii/S0022169423003906#b34), section 3.3 for details.
 
-The three models are called using the commands `javelle()`, `extendedQDF()`, and `reversiblejumpQDF()`. 
+The three models are called using the commands `javelle()`, `extendedQDF()`, and `reversiblejumpQDF()`. The inputs are
+- `data` - the data in matrix format
+- `startpoint` - a named vector containing startpoints for each of the model parameters. 
+- `tuning` - a named vector specifying the width of the proposal distributions for some of the model parameters.
+- `iter` - the number of iterations in the MCMC sampler.
+- `ss` - the number of iterations at which we subsample. If included, the sampler stores every ss-th iteration.
+
+The `reversiblejumpQDF()` model additionally takes 
+- `innerloop` - the number of times to repeat sampling before proposing to jump between models.
+
+For example, if we wanted to run the `reversiblejumpQDF()` model for 2.5*10^6 iterations, storing every 5th iteration, where we repeat sampling 10 times before proposing a jump between models, we would call:
+```
+outputRJ <- reversiblejumpQDF(data,startpoint,tuning,2.5*10^6,5,10)
+```
 
 Time? output?
 
