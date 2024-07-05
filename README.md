@@ -67,16 +67,16 @@ between these generated sets of annual maxima. See [Barna et al.,
 (2023)](https://www.sciencedirect.com/science/article/pii/S0022169423003906#b34)
 for a discussion of how to process data for QDF analysis.
 
-The MCMC sampler expects data in the form of a (n\*d) x 2 dataframe,
-where n = number of years of observed data at a station and d = the
-number of durations to be simultaneously modeled. The first column
-contains the data values and the second column indicates the duration
-that the data value corresponds to. The data should be ordered from
-smallest duration to largest.
+The MCMC sampler expects data in the form of a (n\*d) x 2 matrix, where
+n = number of years of observed data at a station and d = the number of
+durations to be simultaneously modeled. The first column contains the
+data values and the second column indicates the duration that the data
+value corresponds to. The data should be ordered from smallest duration
+to largest.
 
 ``` r
 load("dyrdalsvatn_data.rda")
-print(annmax, nrows = 1, digits = 3)
+print(annmax, nrows = 5, digits = 3)
 ```
 
     ##     ann max [m^3/s] duration [hours]
@@ -108,7 +108,7 @@ section 3.3 for details.
 The three models are called using the commands `javelle()`,
 `extendedQDF()`, and `reversiblejumpQDF()`. The inputs are
 
-- `data` - the dataframe of annual maxima and durations
+- `data` - the matrix of annual maxima and durations
 
 - `startpoint` - a named vector containing startpoints for the model
   parameters.
@@ -135,7 +135,8 @@ sampling 10 times before proposing a jump between models, we would call:
 The routines presented were developed for targeted analysis of twelve
 gauging stations, allowing individual generation of start points and
 tuning of proposal distributions. These start points and tuning
-parameters are stored in the repository.
+parameters are stored in the repository as part of the `.rda` file for
+each station.
 
 The model output is stored as a list, where the first list item stores
 the log prior and log likelihood values at each iteration and the second
