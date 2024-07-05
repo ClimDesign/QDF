@@ -28,7 +28,7 @@ source("mcmc_sampler.R")
 Additionally, [Stan](https://mc-stan.org/) (version 2.25 or later) was used to generate initial values for some parameters to improve the efficiency of the MCMC sampler. See (this link) for details. 
 
 ### Data structure
-QDF analysis requires generating several sets of annual maxima from observed data at a single gauging station. Each set of annual maxima corresponds to a different duration. The model then finds a relationship between these sets of annual maxima. See [Barna et al., 2023](https://www.sciencedirect.com/science/article/pii/S0022169423003906#b34) for a discussion of how to process data for QDF analysis.  
+QDF analysis requires generating several sets of annual maxima from observed data at a single gauging station. Each set of annual maxima corresponds to a different duration. The model then finds a relationship between these generated sets of annual maxima. See [Barna et al., 2023](https://www.sciencedirect.com/science/article/pii/S0022169423003906#b34) for a discussion of how to process data for QDF analysis.  
 
 The MCMC sampler expects data in the form of a 2 x (n*d) matrix, where n = number of years of observed data at a station and d = the number of durations to be simultaneously modeled. The first row contains the data values and the second row indicates the duration that the data value corresponds to. The data should be ordered from smallest duration to largest. 
 
@@ -52,7 +52,8 @@ For example, if we wanted to run the `reversiblejumpQDF()` model for 2.5*10^6 it
 outputRJ <- reversiblejumpQDF(data, startpoint, tuning, iter = 2.5*10^6, ss = 5, innerloop = 10)
 ```
 
-small set, custom analysis, long time, pre computed startpoints and tuning parameters for each dataset to repeat the analysis in article 1 are loaded into the respository. 
-Time? output?
+The routines presented were developed for targeted analysis of twelve gauging stations, allowing individual generation of start points and tuning of proposal distributions. These start points and tuning parameters are stored in the repository. Details on using Stan to generate start points are available at (this link).
+
+The output is stored as a list, where the first list item stores the log prior and log likelihood values at each iteration and the second list item stores the parameter values at each iteration. The `javelle()` and `extendedQDF()` models also store the acceptance rates for each parameter as a third list item.
 
 ## 
