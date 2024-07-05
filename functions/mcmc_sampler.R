@@ -184,7 +184,7 @@ javelle <- function(data,startpoint,tuning,iter,ss){
 }
 
 
-doubleDelta <- function(data,startpoint,tuning,iter,ss){
+extendedQDF <- function(data,startpoint,tuning,iter,ss){
   m = dim(data)[1]/length(unique(data[,2]))
   stpt=checkStartpoints(data,tuning,m,startpoint["Q"],
                         startpoint["B"],startpoint["X"],
@@ -258,7 +258,7 @@ doubleDelta <- function(data,startpoint,tuning,iter,ss){
   return(list(obj,params,accept))
 }
 
-reversibleJump <- function(data,startpoint,tuning,iter,ss,innerloop){
+reversiblejumpQDF <- function(data,startpoint,tuning,iter,ss,innerloop){
   m = dim(data)[1]/length(unique(data[,2]))
   stpt=checkStartpoints(data,tuning,m,startpoint["Q"],
                         startpoint["B"],startpoint["X"],
