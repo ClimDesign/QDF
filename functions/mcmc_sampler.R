@@ -13,18 +13,18 @@ transformToGEV <- function(y,m,Qind,beta,xi,Delta){
   # a set of GEV params for a single duration
   # ---------------
   # m = number of years of data
-  # y = data matrix with dim. 2 x m*n (num yrs * num durations)
+  # y = data matrix with dim. m*n (num yrs * num durations) x 2
   # Qind,beta,xi = scalars
   # Delta = either a 1 x 1 (scalar) or a 1 x 2 vector of params
   #         depending on which model is running
   # ----------------------------------------
-  n <- length(unique(y[2,])) #number of durations
+  n <- length(unique(y[,2])) #number of durations
   gevp <- matrix(ncol = n*3,nrow = 2) #GEV has 3 parameters
   colnames(gevp) <- rep(c("mu","sigma","xi"),n)
   j=1
   for(i in seq(1,m*n,by=m)){ #iterate over duration
-    subY <- y[,i:(i+(m-1))]
-    d <- unique(subY[2,])
+    subY <- y[i:(i+(m-1)),]
+    d <- unique(subY[,2])
     ## -- create the GEV parameters ----
     QindStar = Qind/(1+d*Delta[1])
     if(length(Delta)==2){ #check if we are in Javelle or DD
@@ -46,7 +46,7 @@ checkConstraints <- function(y,m,gevp,Delta){
   # (2) the 3 x n GEV parameters 
   # ---------------
   # m = number of years of data
-  # y = data matrix with dim. 2 x m*n (num yrs * num durations)
+  # y = data matrix with dim. m*n (num yrs * num durations) x 2
   # gevp = matrix of gev parameters with dim. 3 x n 
   # Delta = either a 1 x 1 or a 1 x 2 vector of Delta params
   #         depending on which model is running
@@ -63,11 +63,9 @@ checkConstraints <- function(y,m,gevp,Delta){
   ## -- GEV support checks ----
   for(i in 1:n){
     subP <- gevp[1,pInd[i]:(pInd[i+1]-1)] #subset parameters by duration
-    subY <- y[1,yInd[i]:(yInd[i+1]-1)] #subset data by duration
+    subY <- y[yInd[i]:(yInd[i+1]-1),1] #subset data by duration
     mu=subP["mu"]; sigma=subP["sigma"]; xi=subP["xi"]
     if(sigma <= 0){check = FALSE; break}
-    # if(xi < 0 & max(subY) > mu - sigma/xi){check = FALSE; break}
-    # if(xi > 0 & min(subY) < mu - sigma/xi){check = FALSE; break}
     if( any((1 + xi*(subY-mu)/sigma) <= 0) ){check = FALSE; break}
   }
   return(check)
@@ -83,7 +81,7 @@ loglik <- function(y,m,Qind,beta,xi,Delta){
   n <- length(unique(gevp[2,]))
   yInd <- c(seq(1,m*n,by=m),(m*n+1)); pInd <- c(seq(1,n*3,by=3),(n*3+1)) 
   for(i in 1:n){ #loop over likelihood for each duration
-    subP <- gevp[1,pInd[i]:(pInd[i+1]-1)]; subY <- y[1,yInd[i]:(yInd[i+1]-1)]
+    subP <- gevp[1,pInd[i]:(pInd[i+1]-1)]; subY <- y[yInd[i]:(yInd[i+1]-1),1]
     mu=subP["mu"]; sigma=subP["sigma"]; xi=subP["xi"]
     total = total + sum(extRemes::devd(subY,mu,sigma,xi,
                                        log = T,type = 'GEV'))}
@@ -95,7 +93,7 @@ logprior <- function(y,m,Qind,beta,xi,Delta){
   gevp = transformToGEV(y,m,Qind,beta,xi,Delta) 
   if(checkConstraints(y,m,gevp,Delta) != TRUE){return(-Inf)}
   # construct log prior:
-  Qpr = log(dtruncnorm(Qind,a=0,b=Inf,40,100))
+  Qpr = log(truncnorm::dtruncnorm(Qind,a=0,b=Inf,40,100))
   bpr = dnorm(beta, 0, 100, log = T)
   xpr = dbeta(-xi + 0.5, shape1=6, shape2=9, log=TRUE)
   if(length(Delta)==2){
@@ -124,7 +122,7 @@ checkStartpoints <- function(y,tuning,m,Qind,beta,xi,Delta){
 }
 
 javelle <- function(data,startpoint,tuning,iter,ss){
-  m = dim(data)[2]/length(unique(data[2,]))
+  m = dim(data)[1]/length(unique(data[,2]))
   stpt=checkStartpoints(data,tuning,m,startpoint["Q"],startpoint["B"],
                         startpoint["X"],startpoint["D1"])
   Qind=stpt[[1]];beta=stpt[[2]];xi=stpt[[3]];Delta=stpt[[4]]
@@ -187,7 +185,7 @@ javelle <- function(data,startpoint,tuning,iter,ss){
 
 
 doubleDelta <- function(data,startpoint,tuning,iter,ss){
-  m = dim(data)[2]/length(unique(data[2,]))
+  m = dim(data)[1]/length(unique(data[,2]))
   stpt=checkStartpoints(data,tuning,m,startpoint["Q"],
                         startpoint["B"],startpoint["X"],
                         c(startpoint["D1"],startpoint["D2"]))
@@ -261,7 +259,7 @@ doubleDelta <- function(data,startpoint,tuning,iter,ss){
 }
 
 reversibleJump <- function(data,startpoint,tuning,iter,ss,innerloop){
-  m = dim(data)[2]/length(unique(data[2,]))
+  m = dim(data)[1]/length(unique(data[,2]))
   stpt=checkStartpoints(data,tuning,m,startpoint["Q"],
                         startpoint["B"],startpoint["X"],
                         c(startpoint["D1"],startpoint["D2"]))
