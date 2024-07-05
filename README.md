@@ -1,6 +1,5 @@
 Flexible and consistent flood-duration-frequency (QDF) models
 ================
-Danielle M. Barna
 
 Authors: [Danielle M.
 Barna](https://scholar.google.com/citations?hl=no&user=homV8wQAAAAJ),
@@ -22,13 +21,16 @@ generalized extreme value (GEV) distribution. QDF models are a type of
 *dependent GEV*, or d-GEV model, and are analogous to
 intensity–duration–frequency (IDF) models for precipitation.
 
-This respository contains routines to fit three different QDF models: -
-The original QDF model from [Javelle et al.,
-2002](https://www.sciencedirect.com/science/article/pii/S0022169401005777) -
-An extended “multiscaling” QDF model from [Barna et al.,
-2023](https://www.sciencedirect.com/science/article/pii/S0022169423003906#b34) -
-A mixture model that combines elements of both the original and extended
-models
+This respository contains routines to fit three different QDF models:
+
+- The original QDF model from [Javelle et al.,
+  2002](https://www.sciencedirect.com/science/article/pii/S0022169401005777)
+
+- An extended “multiscaling” QDF model from [Barna et al.,
+  2023](https://www.sciencedirect.com/science/article/pii/S0022169423003906#b34)
+
+- A mixture model that combines elements of both the original and
+  extended models
 
 <img src="https://github.com/ClimDesign/QDF/assets/49793254/ee515bf8-0c44-4436-88e0-44b1ea58c726" width="600">
 
@@ -74,7 +76,7 @@ smallest duration to largest.
 
 ``` r
 load("dyrdalsvatn_data.rda")
-print(annmax, nrows = 5, digits = 3)
+print(annmax, nrows = 1, digits = 3)
 ```
 
     ##     ann max [m^3/s] duration [hours]
@@ -106,7 +108,7 @@ section 3.3 for details.
 The three models are called using the commands `javelle()`,
 `extendedQDF()`, and `reversiblejumpQDF()`. The inputs are
 
-- `data` - the data in matrix format
+- `data` - the dataframe of annual maxima and durations
 
 - `startpoint` - a named vector containing startpoints for the model
   parameters.
@@ -119,15 +121,16 @@ The three models are called using the commands `javelle()`,
 - `ss` - the number of iterations at which we subsample. If included,
   the sampler stores every ss-th iteration.
 
-The `reversiblejumpQDF()` model additionally takes - `innerloop` - the
-number of times to repeat sampling before proposing to jump between
-models.
+The `reversiblejumpQDF()` model additionally takes
+
+- `innerloop` - the number of times to repeat sampling before proposing
+  to jump between models.
 
 For example, if we wanted to run the `reversiblejumpQDF()` model for
 2.5\*10^6 iterations, storing every 5th iteration, where we repeat
 sampling 10 times before proposing a jump between models, we would call:
 
-    outputRJ <- reversiblejumpQDF(data, startpoint, tuning, iter = 2.5*10^6, ss = 5, innerloop = 10)
+    outputRJ <- reversiblejumpQDF(annmax, startpoint, tuning, iter = 2.5*10^6, ss = 5, innerloop = 10)
 
 The routines presented were developed for targeted analysis of twelve
 gauging stations, allowing individual generation of start points and
