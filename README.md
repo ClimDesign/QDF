@@ -64,3 +64,5 @@ The models rely on a quantile-based reparameterization of the GEV where the loca
 To convert between this reparameterization and the more common [location-scale parametrization](https://en.wikipedia.org/wiki/Generalized_extreme_value_distribution) of the GEV, use `this`. (rowwise conversion? mixture model?
 
 To plot return level plots, use `this`. 
+
+## References
