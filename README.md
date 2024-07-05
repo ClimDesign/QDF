@@ -65,14 +65,32 @@ between these generated sets of annual maxima. See [Barna et al.,
 (2023)](https://www.sciencedirect.com/science/article/pii/S0022169423003906#b34)
 for a discussion of how to process data for QDF analysis.
 
-The MCMC sampler expects data in the form of a 2 x (n\*d) matrix, where
-n = number of years of observed data at a station and d = the number of
-durations to be simultaneously modeled. The first row contains the data
-values and the second row indicates the duration that the data value
-corresponds to. The data should be ordered from smallest duration to
-largest.
+The MCMC sampler expects data in the form of a (n\*d) x 2 dataframe,
+where n = number of years of observed data at a station and d = the
+number of durations to be simultaneously modeled. The first column
+contains the data values and the second column indicates the duration
+that the data value corresponds to. The data should be ordered from
+smallest duration to largest.
 
-(example? change to Rmd)
+``` r
+load("dyrdalsvatn_data.rda")
+
+annmax
+```
+
+    ##      ann max [m^3/s] duration (hours)
+    ##                <num>            <num>
+    ##   1:        5.771216                1
+    ##   2:        6.811575                1
+    ##   3:        7.635233                1
+    ##   4:        6.676308                1
+    ##   5:        8.211587                1
+    ##  ---                                 
+    ## 220:        2.824581               72
+    ## 221:        4.637519               72
+    ## 222:        2.930658               72
+    ## 223:        3.148563               72
+    ## 224:        2.772476               72
 
 ### Running the MCMC sampler
 
@@ -87,13 +105,20 @@ models. See [Barna et al.,
 section 3.3 for details.
 
 The three models are called using the commands `javelle()`,
-`extendedQDF()`, and `reversiblejumpQDF()`. The inputs are - `data` -
-the data in matrix format - `startpoint` - a named vector containing
-startpoints for the model parameters. - `tuning` - a named vector
-specifying the width of the proposal distributions for the model
-parameters. - `iter` - the number of iterations in the MCMC sampler. -
-`ss` - the number of iterations at which we subsample. If included, the
-sampler stores every ss-th iteration.
+`extendedQDF()`, and `reversiblejumpQDF()`. The inputs are
+
+- `data` - the data in matrix format
+
+- `startpoint` - a named vector containing startpoints for the model
+  parameters.
+
+- `tuning` - a named vector specifying the width of the proposal
+  distributions for the model parameters.
+
+- `iter` - the number of iterations in the MCMC sampler.
+
+- `ss` - the number of iterations at which we subsample. If included,
+  the sampler stores every ss-th iteration.
 
 The `reversiblejumpQDF()` model additionally takes - `innerloop` - the
 number of times to repeat sampling before proposing to jump between
