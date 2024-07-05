@@ -5,7 +5,7 @@ Authors: [Danielle M. Barna](https://scholar.google.com/citations?hl=no&user=hom
 Publications: [Flexible and consistent Flood–Duration–Frequency modeling: A Bayesian approach](https://www.sciencedirect.com/science/article/pii/S0022169423003906#b34)
 
 ## Overview
-Design values estimate the relationship between a flood’s return level (magnitude) and return period (frequency). Flood-duration-frequency (QDF) models are a class of statistical models that provide design value estimates at multiple durations by simulateneously estimating several durations and quantiles at once under consistency constraints. They are are analogous to intensity-duration-frequency (IDF) models used in precipitation modeling. 
+Design values estimate the relationship between a flood’s return level (magnitude) and return period (frequency). Flood-duration-frequency (QDF) models are a class of extreme value models that provide design value estimates at multiple durations by simulateneously estimating several durations and quantiles at once under consistency constraints.  Typically the underlying extreme value distribution is assumed to be the generalized extreme value (GEV) distribution. QDF models are a type of *dependent GEV*, or d-GEV model, and are analogous to intensity–duration–frequency (IDF) models for precipitation.
 
 This respository contains routines to fit three different QDF models:
 - The original QDF model from [Javelle et al., 2002](https://www.sciencedirect.com/science/article/pii/S0022169401005777)
@@ -25,10 +25,12 @@ library(truncnorm)
 
 source("mcmc_sampler.R")
 ```
-Additionally, [Stan](https://mc-stan.org/) (version 2.25 or later) was used to generate initial values for some parameters to improve the efficiency of the MCMC sampler. See (this link) for details. 
+The models are fit in a Bayesian framework and estimation relies on Markov Chain Monte Carlo (MCMC) sampling.
+
+[Stan](https://mc-stan.org/) (version 2.25 or later) was used to generate initial values for some parameters to improve the efficiency of the MCMC sampler. Details on using Stan to generate initial values for QDF analysis are available at (this link).
 
 ### Data structure
-QDF analysis requires generating several sets of annual maxima from observed data at a single gauging station. Each set of annual maxima corresponds to a different duration. The model then finds a relationship between these generated sets of annual maxima. See [Barna et al., 2023](https://www.sciencedirect.com/science/article/pii/S0022169423003906#b34) for a discussion of how to process data for QDF analysis.  
+QDF analysis requires generating several sets of annual maxima from observed data at a single gauging station. Each set of annual maxima corresponds to a different duration. The model then finds a relationship between these generated sets of annual maxima. See [Barna et al., (2023)](https://www.sciencedirect.com/science/article/pii/S0022169423003906#b34) for a discussion of how to process data for QDF analysis.  
 
 The MCMC sampler expects data in the form of a 2 x (n*d) matrix, where n = number of years of observed data at a station and d = the number of durations to be simultaneously modeled. The first row contains the data values and the second row indicates the duration that the data value corresponds to. The data should be ordered from smallest duration to largest. 
 
@@ -52,8 +54,13 @@ For example, if we wanted to run the `reversiblejumpQDF()` model for 2.5*10^6 it
 outputRJ <- reversiblejumpQDF(data, startpoint, tuning, iter = 2.5*10^6, ss = 5, innerloop = 10)
 ```
 
-The routines presented were developed for targeted analysis of twelve gauging stations, allowing individual generation of start points and tuning of proposal distributions. These start points and tuning parameters are stored in the repository. Details on using Stan to generate start points are available at (this link).
+The routines presented were developed for targeted analysis of twelve gauging stations, allowing individual generation of start points and tuning of proposal distributions. These start points and tuning parameters are stored in the repository. 
 
-The output is stored as a list, where the first list item stores the log prior and log likelihood values at each iteration and the second list item stores the parameter values at each iteration. The `javelle()` and `extendedQDF()` models also store the acceptance rates for each parameter as a third list item.
+The model output is stored as a list, where the first list item stores the log prior and log likelihood values at each iteration and the second list item stores the parameter values at each iteration. The `javelle()` and `extendedQDF()` models also store the acceptance rates for each parameter as a third list item.
 
-## 
+## Working with the model output
+The models rely on a quantile-based reparameterization of the GEV where the location parameter is replaced with the median. See, e.g., [Castro-Camilo et al., (2022)](https://onlinelibrary.wiley.com/doi/full/10.1002/env.2742). 
+
+To convert between this reparameterization and the more common [location-scale parametrization](https://en.wikipedia.org/wiki/Generalized_extreme_value_distribution) of the GEV, use `this`. (rowwise conversion? mixture model?
+
+To plot return level plots, use `this`. 
