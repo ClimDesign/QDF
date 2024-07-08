@@ -23,11 +23,6 @@ The implementation relies on a quantile-based reparameterization of the
 GEV. See, e.g., [Castro-Camilo et al.,
 (2022)](https://onlinelibrary.wiley.com/doi/full/10.1002/env.2742).
 
-### Prerequisites
-
-Requires [Stan version
-2.25](https://mc-stan.org/rstan/reference/stan_version.html) or greater.
-
 ## The generalized extreme value distribution
 
 In its standard location-scale parameterization the GEV has CDF
@@ -95,5 +90,12 @@ that all events are positive (for example, we could have a series of
 flood events where the amount of water is measured in cubic meters per
 second; negative values would not make sense here) and second, that the
 $\xi$ parameter falls between -0.5 and 0.5. This second assumption is
-[common in hydrological modeling of
-extremes](https://agupubs.onlinelibrary.wiley.com/doi/abs/10.1029/1999wr900330).
+common in hydrological modeling of extremes.
+
+The parameter bounds are worked out in [this Rpubs
+document](https://rpubs.com/dbarna/brmsgev).
+
+## Prerequisites
+
+Requires [Stan version
+2.25](https://mc-stan.org/rstan/reference/stan_version.html) or greater.
