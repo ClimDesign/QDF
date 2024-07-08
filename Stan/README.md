@@ -28,7 +28,7 @@ GEV. See, e.g., [Castro-Camilo et al.,
 Requires [Stan version
 2.25](https://mc-stan.org/rstan/reference/stan_version.html) or greater.
 
-## Implementation details
+## The generalized extreme value distribution
 
 In its standard location-scale parameterization the GEV has CDF
 
@@ -46,17 +46,6 @@ $$
 
 where $-\infty < \mu < \infty$, $\sigma > 0$, and
 $-\infty < \xi < \infty$.
-
-When fitting the GEV with a boilerplate MCMC (for example, a
-metropolis-hasting algorithm) we would enforce this condition by simply
-setting the log likelihood equal to $-\infty$ when the sampler proposes
-a value outside the support.
-
-However, Stan needs parameter bounds defined at initialization, so we
-can’t just enforce any support conditions in the likelihood.
-Furthermore, the parameters need to be continuously differentiable at
-the bounds, so we can’t have bounds in the form of conditional
-statements on other parameter values (no if-then statements).
 
 This is typically handled (see Aki Vehtari’s
 [work](https://mc-stan.org/users/documentation/case-studies/gpareto_functions.html)
@@ -98,15 +87,13 @@ statistic we care about in the context of Eqn (1).
 
 The trick is to reparameterize the GEV such that we can make claims
 about one of the parameters that allow us to reliably tie the order
-statistics ($y_{min}$,$y_{max}$) to the bounds on $\xi$.
+statistics ($y_{min}$ , $y_{max}$) to the bounds on $\xi$.
 
-The relationship between the location parameter, $\mu$, and the median,
-$\eta$, is given as $$
-\begin{equation}
-    \eta = 
-    \begin{cases}
-    \mu + \sigma \frac{\text{log}(2)^{-\xi}-1}{\xi} & \text{if}\ \xi \neq 0 \\
-    \mu - \text{log}\left(\text{log}(2)\right) & \text{if}\ \xi = 0.
-    \end{cases}
-\end{equation}
-$$
+The reparameterization and the subsequent parameter bounds rely on two
+properties of the data that are common in extreme event modeling: first,
+that all events are positive (for example, we could have a series of
+flood events where the amount of water is measured in cubic meters per
+second; negative values would not make sense here) and second, that the
+$\xi$ parameter falls between -0.5 and 0.5. This second assumption is
+[common in hydrological modeling of
+extremes](https://agupubs.onlinelibrary.wiley.com/doi/abs/10.1029/1999wr900330).
