@@ -52,16 +52,11 @@ metropolis-hasting algorithm) we would enforce this condition by simply
 setting the log likelihood equal to $-\infty$ when the sampler proposes
 a value outside the support.
 
-However, once we look at fitting the GEV with more complex methods the
-parameter-dependent support starts to become an issue.
-
-In this vignette we look at the gradient-based Hamiltonian Monte Carlo
-(HMC) sampler implemented in Stan. Stan needs parameter bounds defined
-at initialization, so we can’t just enforce any support conditions in
-the likelihood. Furthermore, the parameters need to be continuously
-differentiable at the bounds, so we can’t have bounds in the form of
-conditional statements on other parameter values (no if-then
-statements).
+However, Stan needs parameter bounds defined at initialization, so we
+can’t just enforce any support conditions in the likelihood.
+Furthermore, the parameters need to be continuously differentiable at
+the bounds, so we can’t have bounds in the form of conditional
+statements on other parameter values (no if-then statements).
 
 This is typically handled (see Aki Vehtari’s
 [work](https://mc-stan.org/users/documentation/case-studies/gpareto_functions.html)
@@ -98,3 +93,20 @@ of the data. This means we cannot definitively tie $y_{max}$ to the
 lower bound and $y_{min}$ to the upper bound, respectively, since we
 would need to know the value of $\mu$ ahead of time to know which order
 statistic we care about in the context of Eqn (1).
+
+### Enforcing support via a quantile-based reparameterization of the GEV
+
+The trick is to reparameterize the GEV such that we can make claims
+about one of the parameters that allow us to reliably tie the order
+statistics ($y_{min}$,$y_{max}$) to the bounds on $\xi$.
+
+The relationship between the location parameter, $\mu$, and the median,
+$\eta$, is given as $$
+\begin{equation}
+    \eta = 
+    \begin{cases}
+    \mu + \sigma \frac{\text{log}(2)^{-\xi}-1}{\xi} & \text{if}\ \xi \neq 0 \\
+    \mu - \text{log}\left(\text{log}(2)\right) & \text{if}\ \xi = 0.
+    \end{cases}
+\end{equation}
+$$
