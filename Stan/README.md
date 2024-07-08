@@ -3,11 +3,37 @@ A quantile-based implementation of the GEV distribution in Stan
 
 ## Overview
 
-## How to fit the GEV using Stan
+We present a user-defined implementation of the generalized extreme
+value (GEV) distribution in the probabilistic programming language
+[Stan](https://mc-stan.org/).
 
-## Implementation details
+Stan provides full Bayesian statistical inference using a powerful
+Hamiltonian Monte Carlo (HMC) algorithm, provided the parameter bounds
+in the model are properly defined [(Gelman et al.,
+2015)](https://journals.sagepub.com/doi/abs/10.3102/1076998615606113).
+Stan allows for [very fast sampling](https://arxiv.org/abs/1206.1901),
+but, most importantly, provides a range of useful diagnostics: using HMC
+to explore the target distribution means failures in geometric
+ergodicity manifest in distinct behaviors that can be developed into
+[diagnostic tools](https://mc-stan.org/docs/stan-users-guide/). Accurate
+diagnostics are particularly appealing in an extreme value setting given
+the natural sparsity of extreme value data.
 
-In its location-scale parameterization the GEV has CDF
+The implementation relies on a quantile-based reparameterization of the
+GEV. See, e.g., [Castro-Camilo et al.,
+(2022)](https://onlinelibrary.wiley.com/doi/full/10.1002/env.2742).
+
+### Prerequisites
+
+Requires [Stan version
+2.25](https://mc-stan.org/rstan/reference/stan_version.html) or greater.
+
+The implementation assumes the shape parameter $\xi$ of the GEV is
+within the range (-0.5,0.5).
+
+## Framing the problem
+
+In its standard location-scale parameterization the GEV has CDF
 
 $$
 G(y) = \text{exp}(-[1 + \xi(\frac{y-\mu}{\sigma})]^{-1/\xi}).
@@ -24,7 +50,7 @@ $$
 where $-\infty < \mu < \infty$, $\sigma > 0$, and
 $-\infty < \xi < \infty$.
 
-When fitting the GEV with a standard boilerplate MCMC (for example, a
+When fitting the GEV with a boilerplate MCMC (for example, a
 metropolis-hasting algorithm) we would enforce this condition by simply
 setting the log likelihood equal to $-\infty$ when the sampler proposes
 a value outside the support.
