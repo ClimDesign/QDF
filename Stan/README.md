@@ -4,10 +4,6 @@ A quantile-based implementation of the GEV distribution in Stan
 In its location-scale parameterization the GEV has CDF
 
 $$
-G(y) = \text{exp}\left\{-\left[1 + \xi\left(\frac{y-\mu}{\sigma}\right)\right]^{-1/\xi}\right\}.
-$$
-
-$$
 G(y) = \text{exp}\{-[1 + \xi(\frac{y-\mu}{\sigma})]^{-1/\xi}\}.
 $$
 
@@ -15,10 +11,7 @@ The support of the distribution depends on all three parameters and the
 data:
 
 $$
-\begin{equation}
-\tag{(1)}
 \{ y : 1 + \xi(y-\mu)/\sigma > 0 \}
-\end{equation}
 $$
 
 where $-\infty < \mu < \infty$, $\sigma > 0$, and
@@ -57,7 +50,7 @@ $(y-\mu)/\sigma$. Assuming all $y$ are positive, we can consider a toy
 scenario where $\mu$ is guaranteed to fall between min($y$) and
 max($y$):
 
-<center>
+<p align="center">
 
 |                                                                                                                            |
 |----------------------------------------------------------------------------------------------------------------------------|
@@ -69,7 +62,7 @@ max($y$):
 | **If $(y-\mu)/\sigma < 0$ then $\xi > 0$**                                                                                  |
 | Then the $y$ we care about is $y_{min}$ and $\xi$ needs an upper bound such that $$\xi < \frac{-1}{(y_{min}-\mu)/\sigma}.$$ |
 
-</center>
+</p>
 
 This works because we can trap $\xi$ between two bounds, one always
 dependent on $y_{max}$ and the other always dependent on $y_{min}$. But
