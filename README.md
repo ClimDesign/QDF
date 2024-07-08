@@ -55,8 +55,7 @@ Markov Chain Monte Carlo (MCMC) sampling.
 
 [Stan](https://mc-stan.org/) (version 2.25 or later) was used to
 generate initial values for some parameters to improve the efficiency of
-the MCMC sampler. Details on using Stan to generate initial values for
-QDF analysis are available at (this link).
+the MCMC sampler. Functions to [a relative link](/Stan/README.md)
 
 ### Data structure
 
