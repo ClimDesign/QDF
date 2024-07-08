@@ -3,8 +3,21 @@ A quantile-based implementation of the GEV distribution in Stan
 
 In its location-scale parameterization the GEV has CDF
 
+$$
+\begin{equation}
+G(y) = \text{exp}\left\{-\left[1 + \xi\left(\frac{y-\mu}{\sigma}\right)\right]^{-1/\xi}\right\}.
+\end{equation}
+$$
+
 The support of the distribution depends on all three parameters and the
 data:
+
+$$
+\begin{equation}
+\tag{(1)}
+\{ y : 1 + \xi(y-\mu)/\sigma > 0 \}
+\end{equation}
+$$
 
 where $-\infty < \mu < \infty$, $\sigma > 0$, and
 $-\infty < \xi < \infty$.
@@ -15,7 +28,7 @@ setting the log likelihood equal to $-\infty$ when the sampler proposes
 a value outside the support.
 
 However, once we look at fitting the GEV with more complex methods the
-parameter-dependent support starts to become a real issue.
+parameter-dependent support starts to become an issue.
 
 In this vignette we look at the gradient-based Hamiltonian Monte Carlo
 (HMC) sampler implemented in Stan. Stan needs parameter bounds defined
