@@ -25,7 +25,7 @@ document](https://rpubs.com/dbarna/brmsgev) which is associated with
 [this `brms` issue
 report.](https://github.com/paul-buerkner/brms/issues/1345)
 
-## Current use case
+## Prerequisites
 
 Requires [Stan version
 2.25](https://mc-stan.org/rstan/reference/stan_version.html) or greater.
