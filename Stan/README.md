@@ -4,9 +4,11 @@ A quantile-based implementation of the GEV distribution in Stan
 In its location-scale parameterization the GEV has CDF
 
 $$
-\begin{equation}
 G(y) = \text{exp}\left\{-\left[1 + \xi\left(\frac{y-\mu}{\sigma}\right)\right]^{-1/\xi}\right\}.
-\end{equation}
+$$
+
+$$
+G(y) = \text{exp}\{-[1 + \xi(\frac{y-\mu}{\sigma})]^{-1/\xi}\}.
 $$
 
 The support of the distribution depends on all three parameters and the
