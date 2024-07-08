@@ -3,9 +3,9 @@ A quantile-based implementation of the GEV distribution in Stan
 
 ## Overview
 
-We present a user-defined implementation of the generalized extreme
-value (GEV) distribution in the probabilistic programming language
-[Stan](https://mc-stan.org/).
+The functions in `ifgev.stan` provide a user-defined implementation of
+the generalized extreme value (GEV) distribution in the probabilistic
+programming language [Stan](https://mc-stan.org/).
 
 Stan provides full Bayesian statistical inference using a powerful
 Hamiltonian Monte Carlo (HMC) algorithm, provided the parameter bounds
