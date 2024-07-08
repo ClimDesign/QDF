@@ -5,4 +5,4 @@
 *.gitattributes linguist-detectable=true
 *.gitattributes linguist-documentation=false
 
-Stan/Rpubs_Stan_GEV_bounds.html* linguist-vendored
+Stan/* linguist-vendored
