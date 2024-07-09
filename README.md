@@ -150,7 +150,7 @@ the location parameter is replaced with the median. See, e.g.,
 [Castro-Camilo et al.,
 (2022)](https://onlinelibrary.wiley.com/doi/full/10.1002/env.2742).
 
-To convert between this reparameterization and the more common
+<DRAFT> To convert between this reparameterization and the more common
 [location-scale
 parametrization](https://en.wikipedia.org/wiki/Generalized_extreme_value_distribution)
 of the GEV, use `this`. (rowwise conversion? mixture model?
