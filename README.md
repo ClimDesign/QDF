@@ -53,9 +53,9 @@ The following dependencies are needed to fit the models:
 The models are fit in a Bayesian framework and estimation relies on
 Markov Chain Monte Carlo (MCMC) sampling.
 
-[Stan](https://mc-stan.org/) (version 2.25 or later) was used to
+A custom GEV model defined in [Stan](https://mc-stan.org/) (version 2.25 or later) was used to 
 generate initial values for some parameters to improve the efficiency of
-the MCMC sampler. See [this directory](/Stan) for details.
+the MCMC sampler. The Stan model and all user-defined probability functions can be found [here](/Stan).
 
 ### Data structure
 
