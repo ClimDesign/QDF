@@ -55,16 +55,13 @@ Markov Chain Monte Carlo (MCMC) sampling.
 
 A custom GEV model defined in [Stan](https://mc-stan.org/) (version 2.25 or later) was used to 
 generate initial values for some parameters to improve the efficiency of
-the MCMC sampler. The Stan model and all user-defined probability functions can be found [here](/Stan).
+the MCMC sampler. The Stan model can be found [here](/Stan).
 
 ### Data structure
 
-QDF analysis requires generating several sets of annual maxima from
-observed data at a single gauging station. Each set of annual maxima
-corresponds to a different duration. The model then finds a relationship
-between these generated sets of annual maxima. See [Barna et al.,
+QDF analysis requires generating several sets of annual maxima from observed data at a single gauging station. Each set of annual maxima corresponds to a different duration. Typically, the duration is defined as the time window over which a specific total flow volume is observed. This is useful in engineering design for retention-specific applications, which often require flood volumes for predetermined durations, sometime averaged over different flood events, rather than the multivariate variability of specific flood events. See [Barna et al.,
 (2023)](https://www.sciencedirect.com/science/article/pii/S0022169423003906#b34)
-for a discussion of how to process data for QDF analysis.
+for details.
 
 The MCMC sampler expects data in the form of a (n\*d) x 2 matrix, where
 n = number of years of observed data at a station and d = the number of
