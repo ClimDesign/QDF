@@ -59,7 +59,7 @@ the MCMC sampler. The Stan model can be found [here](/Stan).
 
 ### Data structure
 
-QDF analysis requires generating several sets of annual maxima from observed data at a single gauging station. Each set of annual maxima corresponds to a different duration. Typically, the duration is defined as the time window over which a specific total flow volume is observed. This is useful in engineering design for retention-specific applications, which often require flood volumes for predetermined durations, sometime averaged over different flood events, rather than the multivariate variability of specific flood events. See [Barna et al.,
+QDF analysis requires generating several sets of annual maxima from observed data at a single gauging station. Each set of annual maxima corresponds to a different duration. Typically, the duration is defined as the time window over which a specific total flow volume is observed. This focus on total flow volume is useful in engineering design for retention-specific applications, which often require flood volumes for predetermined durations, sometime averaged over different flood events, rather than the multivariate variability of specific flood events. See [Barna et al.,
 (2023)](https://www.sciencedirect.com/science/article/pii/S0022169423003906#b34)
 for details.
 
